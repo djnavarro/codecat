@@ -14,3 +14,5 @@ Imports:
     purrr,
     rlang,
     tibble
+URL: https://github.com/djnavarro/codecat
+BugReports: https://github.com/djnavarro/codecat/issues
