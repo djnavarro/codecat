@@ -78,16 +78,8 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/djnavarro/codecat" class="external-link">codecat</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span></code></pre></div>
-<p>To specify the labelling scheme for a variable, use the <code><a href="reference/code.html">code()</a></code> function:</p>
+<p>To specify a coding scheme for a variable, use the <code><a href="reference/code.html">code()</a></code> function. A collection of coding schemes that should be applied to a data set is called a <strong>codebook</strong>, and is created using <code><a href="reference/codebook.html">codebook()</a></code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/code.html">code</a></span><span class="op">(</span><span class="st">"SEX"</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 2 × 3</span></span>
-<span><span class="co">#&gt;   variable level label </span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt; </span></span>
-<span><span class="co">#&gt; 1 SEX          0 Male  </span></span>
-<span><span class="co">#&gt; 2 SEX          1 Female</span></span></code></pre></div>
-<p>Build a codebook for multiple variables:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/codebook.html">codebook</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="reference/code.html">code</a></span><span class="op">(</span><span class="st">"SEX"</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="reference/code.html">code</a></span><span class="op">(</span><span class="st">"STUDY"</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"S1"</span>, <span class="st">"S2"</span>, <span class="st">"S3"</span><span class="op">)</span><span class="op">)</span></span>
@@ -106,8 +98,8 @@
 <span><span class="co">#&gt; 1 STUDY        1 S1   </span></span>
 <span><span class="co">#&gt; 2 STUDY        2 S2   </span></span>
 <span><span class="co">#&gt; 3 STUDY        3 S3</span></span></code></pre></div>
-<p>Apply it to data:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<p>Apply it to data using <code><a href="reference/encode.html">encode()</a></code>:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
 <span>  STUDY <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  SEX   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,</span>
@@ -129,6 +121,19 @@
 <span><span class="co">#&gt; 4 S2    Female    52</span></span>
 <span><span class="co">#&gt; 5 S2    Female    26</span></span>
 <span><span class="co">#&gt; 6 S2    Male      80</span></span></code></pre></div>
+<p>To restore original levels, use <code><a href="reference/decode.html">decode()</a></code>:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dat2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/encode.html">encode</a></span><span class="op">(</span><span class="va">dat</span>, <span class="va">labels</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/decode.html">decode</a></span><span class="op">(</span><span class="va">dat2</span>, <span class="va">labels</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 3</span></span>
+<span><span class="co">#&gt;   STUDY   SEX   AGE</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1     1     0    32</span></span>
+<span><span class="co">#&gt; 2     1     0    18</span></span>
+<span><span class="co">#&gt; 3     1     1    64</span></span>
+<span><span class="co">#&gt; 4     2     1    52</span></span>
+<span><span class="co">#&gt; 5     2     1    26</span></span>
+<span><span class="co">#&gt; 6     2     0    80</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

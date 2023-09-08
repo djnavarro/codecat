@@ -2,4 +2,5 @@
 
 export(code)
 export(codebook)
+export(decode)
 export(encode)

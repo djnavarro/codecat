@@ -36,7 +36,7 @@ codebook <- function(...) {
   return(map)
 }
 
-#' Apply a codebook to create labelled factors
+#' Use a codebook to create factors
 #'
 #' @param data A data frame or tibble
 #' @param codebook A codebook
@@ -69,5 +69,43 @@ encode <- function(data, codebook) {
   )
   tibble::as_tibble(mapped_data)
 }
+
+#' Use a codebook to recreate original levels from factors
+#'
+#' @param data A data frame or tibble
+#' @param codebook A codebook
+#'
+#' @return Data set with variables encoded as factors
+#' @export
+#'
+#' @examples
+#' labels <- codebook(
+#'   code("SEX", levels = c(0, 1), labels = c("Male", "Female")),
+#'   code("STUDY", levels = c(1, 2, 3), labels = c("S1", "S2", "S3"))
+#' )
+#' dataset <- data.frame(
+#'    STUDY = factor(c("S1", "S1", "S1", "S2", "S2", "S2")),
+#'    SEX   = factor(c("Male", "Male", "Female", "Female", "Female", "Male")),
+#'    AGE   = c(32, 18, 64, 52, 26, 80)
+#' )
+#' decode(dataset, labels)
+decode <- function(data, codebook) {
+  mapped_vars <- names(codebook)
+  mapped_data <- purrr::map2(
+    data,
+    names(data),
+    function(x, var, m) {
+      if(!(var %in% mapped_vars)) return(x)
+      x_chr <- as.character(x)
+      x_lvl <- m[[var]]$level
+      x_lab <- m[[var]]$label
+      x <- x_lvl[match(x_chr, x_lab)]
+      return(x)
+    },
+    m = codebook
+  )
+  tibble::as_tibble(mapped_data)
+}
+
 
 
