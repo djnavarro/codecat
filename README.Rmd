@@ -1,0 +1,69 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# codecat
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of codecat is to provide a minimal toolkit for defining and using codebooks (also called data dictionaries) which specify factor levels and labels for one or more (usually categorical) variables in a data set.
+
+## Installation
+
+You can install the development version of codecat like so:
+
+``` r
+remotes::install_github("djnavarro/codecat")
+```
+
+## Example
+
+```{r load-package}
+library(codecat)
+library(tibble)
+```
+
+To specify the labelling scheme for a variable, use the `code()` function:
+
+```{r define-code}
+code("SEX", levels = c(0, 1), labels = c("Male", "Female"))
+```
+
+Build a codebook for multiple variables:
+
+```{r define-codebook}
+codebook(
+  code("SEX", levels = c(0, 1), labels = c("Male", "Female")),
+  code("STUDY", levels = c(1, 2, 3), labels = c("S1", "S2", "S3"))
+)
+```
+
+Apply it to data:
+
+```{r use-codebook}
+dat <- tibble(
+  STUDY = c(1, 1, 1, 2, 2, 2),
+  SEX   = c(0, 0, 1, 1, 1, 0),
+  AGE   = c(32, 18, 64, 52, 26, 80)
+)
+
+labels <- codebook(
+  code("SEX", levels = c(0, 1), labels = c("Male", "Female")),
+  code("STUDY", levels = c(1, 2, 3), labels = c("S1", "S2", "S3"))
+)
+
+encode(dat, labels)
+```
+
